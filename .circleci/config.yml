@@ -1,0 +1,20 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/bithavoc/gomeas
+    steps:
+      - checkout
+      - run:
+          name: Install
+          command: go get -v -t -d ./...
+      - run:
+          name: Tests
+          command: go test -coverprofile=coverage.out -v ./... && go tool cover -html=coverage.out -o coverage.html
+      - store_artifacts:
+          path: coverage.out
+          destination: coverage.out
+      - store_artifacts:
+          path: coverage.html
+          destination: coverage.html
